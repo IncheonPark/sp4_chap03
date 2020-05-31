@@ -15,6 +15,7 @@ public class MemberListPrinter {
 	public void printAll() {
 		Collection<Member> members = memberDao.selectAll();
 		
+		// members에 멤버가 없을 시 예외 처리
 		if (members == null || members.size() == 0) {
 			throw new CollectionNoMemberException();
 			

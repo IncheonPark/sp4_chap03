@@ -93,6 +93,7 @@ public class MainForSpring {
 		MemberListPrinter listPrinter = ctx.getBean("listPrinter", MemberListPrinter.class);
 		try {
 			listPrinter.printAll();
+			//조회할 멤버가 없을 시 예외 문구 출력.
 		} catch (CollectionNoMemberException e) {
 			System.out.println("조회할 회원이 없습니다.");
 		}
