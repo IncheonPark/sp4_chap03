@@ -35,7 +35,7 @@ public class Member {
 	public String getPassword() {
 		return password;
 	}
-	public Date getregisterDateDate() {
+	public Date getRegisterDate() {
 		return registerDate;
 	}
 	

@@ -5,7 +5,23 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+	<bean id="memberDao" class="spring.MemberDao">
+	</bean>
 	
+	<bean id="memberRegSvc" class="spring.MemberRegisterService">
+		<constructor-arg ref="memberDao" />
+	</bean>
 	
+	<bean id="changePwdSvc" class="spring.ChangePasswordService">
+		<constructor-arg ref="memberDao" />
+	</bean>
+	
+	<bean id="listPrinter" class="spring.MemberListPrinter">
+		<constructor-arg ref="memberDao" />
+		<constructor-arg ref="memberPrinter" />
+	</bean>
+	
+	<bean id="memberPrinter" class="spring.MemberPrinter" >
+	</bean>
 
 </beans>
