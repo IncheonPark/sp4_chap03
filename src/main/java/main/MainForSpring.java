@@ -11,18 +11,24 @@ import spring.AlreadyExistingMemberException;
 import spring.ChangePasswordService;
 import spring.CollectionNoMemberException;
 import spring.IdPasswordNotMatchingException;
+import spring.MemberInfoPrinter;
 import spring.MemberListPrinter;
 import spring.MemberNotFoundException;
 import spring.MemberRegisterService;
 import spring.NotPassEqualToConfirmException;
 import spring.RegisterRequest;
+import spring.VersionPrinter;
 
 public class MainForSpring {
 	
 	private static ApplicationContext ctx = null;
 	
 	public static void main(String[] args) throws IOException {
-		ctx = new GenericXmlApplicationContext("classpath:applicationContext.xml");
+		ctx = new GenericXmlApplicationContext("classpath:configImport.xml");
+		//방법 1. 한 설정 파일 사용 시("classpath:applicationContext.xml");
+		//방법 2. 두개 이상 설정 파일 사용 시 파라미터 입력("classpath:conf1.xml","classpath:conf2.xml");
+		//방법 3. 두개 이상 설정 파일 사용 시 배열 변수 전달 Stiring[] conf = {"classpath:conf1.xml", "classpath:conf2.xml"};
+		//방법 4. 한개의 설정 파일을 사용하고 그 설정 파일에 import 추가
 		
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		while (true) {
@@ -42,6 +48,12 @@ public class MainForSpring {
 				continue;
 			} else if (command.startsWith("list")) {
 				processListCommand();
+				continue;
+			} else if (command.startsWith("info ")) {
+				processInfoCommand(command.split(" "));
+				continue;
+			} else if (command.equals("version")) {
+				processVersionCommand();
 				continue;
 			}
 			printHelp();
@@ -105,7 +117,24 @@ public class MainForSpring {
 		System.out.println("명령어 사용법: 입력 요소 사이에 공백을 한 칸씩 넣어 주세요.");
 		System.out.println("사용자 등록 시 : new 이메일 이름 암호 암호확인");
 		System.out.println("비밀 번호 변경 시 : change 이메일 현재비번 바꿀비번");
+		System.out.println("회원 목록 조회 시 : list");
+		System.out.println("회원 정보 조회 시 : info 이메일");
+		System.out.println("버전 정보 조회 시 : version");
 		System.out.println();
+	}
+	
+	private static void processInfoCommand(String[] args) {
+		if(args.length != 2) {
+			printHelp();
+			return;
+		}
+		MemberInfoPrinter infoPrinter = ctx.getBean("infoPrinter", MemberInfoPrinter.class);
+		infoPrinter.printMemberInfo(args[1]);
+	}
+	
+	private static void processVersionCommand() {
+		VersionPrinter versionPrinter = ctx.getBean("versionPrinter", VersionPrinter.class);
+		versionPrinter.print();
 	}
 
 }
